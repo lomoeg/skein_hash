@@ -1,16 +1,18 @@
 #include <stdint.h>
 
-/* This is your hash instance context, i.e., hash state.
- * You could put the following stuff inside here:
+/* Hash instance context, i.e., hash state.
+ * The buffer should be used to store the bytes left from partial
+ * message blocks which should be reused in the next iteration.
+ * context includes:
  * - buffered message bytes
  * - current offset within said buffer
  * - chaining value
  * - tweak
- * - leprechaun gold
- * - next week's correct lotto numbers
  */
 typedef struct {
-
+    size_t  hashBitLen;  /* size of hash result, in bits */
+    size_t  bCnt;        /* current byte count in buffer b[] */
+    uint64_t  T[2];         /* tweak words: T[0]=byte cnt, T[1]=flags */
 } context;
 
 /* Implement the following API.

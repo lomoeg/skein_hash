@@ -23,10 +23,19 @@ void init(context *ctx) {
 }
 
 void update(unsigned char *a, int len, context *ctx) {
+    //  pre-fill a buffer with data before executing the hash function.
+    //  In particular, update is not intended to run UBI on its data yet,
+    //  since we are implementing the "simple hash" variant of Skein.
 
 }
 
 void finalize(unsigned char *a, context *ctx) {
+    // the finalize function should be used for the last block
+    // (we can't know if this is the last block before finalize and this information is
+    // required for the tweak). This is why the remaining message bytes should be
+    // saved to a buffer in the update function.
 
 }
+
+
 
