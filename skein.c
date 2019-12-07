@@ -20,13 +20,16 @@ A: <FILL ME IN>
 #endif
 
 void init(context *ctx) {
-    memset(ctx->chainingValues, 0, sizeof(ctx->chainingValues));
+    memset(ctx->chainingValues, 0, sizeof(ctx->chainingValues)); /* zero the chaining variables */
+
+
 }
 
 void update(unsigned char *a, int len, context *ctx) {
     //  pre-fill a buffer with data before executing the hash function.
     //  In particular, update is not intended to run UBI on its data yet,
     //  since we are implementing the "simple hash" variant of Skein.
+
 //    for (int i = 0; i < 64; i++) {
 //        printf("%" PRIx64 " ", a[i]);
 //    }
@@ -37,6 +40,7 @@ void finalize(unsigned char *a, context *ctx) {
     // (we can't know if this is the last block before finalize and this information is
     // required for the tweak). This is why the remaining message bytes should be
     // saved to a buffer in the update function.
+
 //    for (int i = 0; i < 64; i++) {
 //        printf("%" PRIu8 " ", a[i]);
 //    }

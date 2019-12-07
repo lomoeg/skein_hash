@@ -17,6 +17,21 @@ typedef struct {
     uint8_t b[32];       // partial block buffer
 } context;
 
+/* blkSize =  256 bits. hashSize =  256 bits */
+// output of the configuration UBI. if you are using Skein as a normal hash function,
+// you can use these IV values as constants and skip the configuration step entirely
+const uint64_t IV_VALUES[4] =
+        {0xFC9DA860D048B449, 0x2FCA66479FA7D833, 0xB33BC3896656840F, 0x6A54E920FDE8DA69};
+
+#define UBI_TYPE_KEY 0   // key (for MAC and KDF)
+#define UBI_TYPE_CFG 4   // configuration block
+#define UBI_TYPE_PRS 8   // personalization
+#define UBI_TYPE_PK  12  // public key (for signature hashing)
+#define UBI_TYPE_KDF 16  // key identifier (for KDF)
+#define UBI_TYPE_NON 20  // nonce (for stream cipher or randomized hashing)
+#define UBI_TYPE_MSG 48  // message
+#define UBI_TYPE_OUT 63  // output
+
 /* Implement the following API.
  * You can add your own functions above, but don't modify below this line.
  */
