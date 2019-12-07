@@ -10,9 +10,11 @@
  * - tweak
  */
 typedef struct {
-    size_t  hashBitLen;  /* size of hash result, in bits */
-    size_t  bCnt;        /* current byte count in buffer b[] */
-    uint64_t  T[2];         /* tweak words: T[0]=byte cnt, T[1]=flags */
+    size_t  hashBitLen;  // size of hash result, in bits
+    size_t  bCnt;        // current byte count in buffer b[]
+    uint64_t T[2];      // tweak words: T[0]=byte cnt, T[1]=flags
+    uint64_t chainingValues[4];       // chaining values
+    uint8_t b[32];       // partial block buffer
 } context;
 
 /* Implement the following API.

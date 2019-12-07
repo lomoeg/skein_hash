@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "skein.h"
+#include <inttypes.h>
 
 #define CLOCK(x) (x >> 8 | (x ^ (x >> 7) ^ (x >> 6) ^ (x >> 2)) << 24)
 void rnd(unsigned char *b, int len) {
@@ -58,6 +59,8 @@ int main() {
 		int len = m[0] % 64;
 		rnd(m, len);
 		update(m, len, &ctx);
+//        printf("%u ", i);
+//        printf("%u \n" , len);
 	}
 	finalize(h, &ctx);
 	printf("%s\n", !memcmp(h, h3, 32) ? "PASS" : "FAIL");
