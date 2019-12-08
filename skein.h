@@ -14,7 +14,7 @@ typedef struct {
     size_t  bCnt;        // current byte count in buffer b[]
     uint64_t T[2];      // tweak words: T[0]=byte cnt, T[1]=flags
     uint64_t chainingValues[4];       // chaining values
-    uint8_t b[32];       // partial block buffer
+    unsigned char b[32];       // contains the remaining message bytes in the last block
 } context;
 
 /* blkSize =  256 bits. hashSize =  256 bits */
@@ -36,15 +36,6 @@ typedef struct {
 //        c_config_const[i*8 + j] = arr[i][j];
 //    }
 //}
-
-#define UBI_TYPE_KEY 0   // key (for MAC and KDF)
-#define UBI_TYPE_CFG 4   // configuration block
-#define UBI_TYPE_PRS 8   // personalization
-#define UBI_TYPE_PK  12  // public key (for signature hashing)
-#define UBI_TYPE_KDF 16  // key identifier (for KDF)
-#define UBI_TYPE_NON 20  // nonce (for stream cipher or randomized hashing)
-#define UBI_TYPE_MSG 48  // message
-#define UBI_TYPE_OUT 63  // output
 
 /* Implement the following API.
  * You can add your own functions above, but don't modify below this line.
