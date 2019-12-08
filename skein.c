@@ -139,8 +139,9 @@ int mod(int a, int b)
 
 void update(unsigned char *a, int len, context *ctx) {
 //    printf("%s", "==== BEGIN THREEFISH CALL ==== \n");
+    printf("len is %d \n", len);
     printf("%s", "message before splitting: ");
-    for (int i = 0; i < 32; ++i) {
+    for (int i = 0; i < 64; ++i) {
         printf("%x ", a[i]);
     }
     printf("\n");
@@ -166,12 +167,23 @@ void update(unsigned char *a, int len, context *ctx) {
     printf("num blocks is %d \n", num_blocks);
     // M_2primes contains the num_blocks with each of Nb bytes
     unsigned char M_2primes[num_blocks][Nb];
-    // process the non-last blocks
-    for (int i = 0; i < num_blocks; ++i) {
-        memcpy(M_2primes[i], m[], sizeof(uint32_t));
+    // popularizing the non-last blocks with data
+    for (int i = 0; i < num_blocks-1; ++i) {
+        for (int j = 0; j < Nb; ++j) {
+            M_2primes[i][j] = a[j];
+        }
     }
-    // process the last block: save the left to the
+    // save the remaining data to the context, so we can process it in the finalize function
 
+
+    // print out the M_2primes
+    for (int i = 0; i < num_blocks; ++i) {
+        printf("block number %d: ", i+1);
+        for (int j =0; j <Nb; ++j) {
+            printf("%x ", M_2primes[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 void finalize(unsigned char *a, context *ctx) {

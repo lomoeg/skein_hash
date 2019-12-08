@@ -10,11 +10,8 @@
  * - tweak
  */
 typedef struct {
-    size_t  hashBitLen;  // size of hash result, in bits
-    size_t  bCnt;        // current byte count in buffer b[]
-    uint64_t T[2];      // tweak words: T[0]=byte cnt, T[1]=flags
-    uint64_t chainingValues[4];       // chaining values
-    unsigned char b[32];       // contains the remaining message bytes in the last block
+    int padding; // how many zeros to pad into the last block
+
 } context;
 
 /* blkSize =  256 bits. hashSize =  256 bits */
