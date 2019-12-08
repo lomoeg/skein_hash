@@ -69,9 +69,9 @@ void threefish(unsigned char *c, const unsigned char *p, const unsigned char *k,
     tweak_words[2] = tweak_words[0] ^ tweak_words[1];   // t2
     key_words[4] = c_key ^ key_words[0] ^ key_words[1] ^ key_words[2] ^ key_words[3]; //k_N_w
     
-    for (int i = 0; i < 5; i++) {
-        printf("Key part: %" PRIx64 "\n", key_words[i]);
-    }
+//    for (int i = 0; i < 5; i++) {
+//        printf("Key part: %" PRIx64 "\n", key_words[i]);
+//    }
     
     // split plaintext into words
     uint64_t p_words[4];
@@ -85,12 +85,12 @@ void threefish(unsigned char *c, const unsigned char *p, const unsigned char *k,
     int s = 0;
     for (int r=0; r < 72; r++) {
         
-        printf("%u: ", r);
-        for (int i = 0; i < 4; i++) {
-            printf("%" PRIx64 " ", c_words[i]);
-        }
-        printf("\n");
-        
+//        printf("%u: ", r);
+//        for (int i = 0; i < 4; i++) {
+//            printf("%" PRIx64 " ", c_words[i]);
+//        }
+//        printf("\n");
+//
         
         // if r % 4 == 0 then generate and add subkeys
         if (r % 4 == 0) {
@@ -132,11 +132,11 @@ void threefish(unsigned char *c, const unsigned char *p, const unsigned char *k,
     c_words[2] += subkeys[2];
     c_words[3] += subkeys[3];
     
-    printf("Final cipher: ");
-    for (int i = 0; i < 4; i++) {
-        printf("%" PRIx64 " ", c_words[i]);
-    }
-    printf("\n");
+//    printf("Final cipher: ");
+//    for (int i = 0; i < 4; i++) {
+//        printf("%" PRIx64 " ", c_words[i]);
+//    }
+//    printf("\n");
     
     // result in uint64_t array c_words, just merge it to one variable c
     
@@ -149,7 +149,7 @@ void threefish(unsigned char *c, const unsigned char *p, const unsigned char *k,
     
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 8; j++) {
-//            c[i*8 + j] = arr[i][j];
+            c[i*8 + j] = arr[i][j];
         }
     }
     //----------------------------------------------------------------
