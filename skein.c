@@ -217,81 +217,11 @@ void tweak_gen(unsigned char res_tweak[16], int msg_type, int processed_bytes, i
 
 
 void update(unsigned char *a, int len, context *ctx) {
-//    printf("%s", "==== BEGIN THREEFISH CALL ==== \n");
 
-    // --- printing the message ----
-//    printf("len is %d \n", len);
-//    printf("%s", "message before splitting: ");
-//    for (int i = 0; i < 64; ++i) {
-//        printf("%x ", a[i]);
-//    }
-//    printf("\n");
-    // --- end printing the message ---
-
-    // --- split the message and pad according to the len given (page 13) ---
-    int Nb = 32;
-    int Nm = len;
-    int p = 0;
-    if (Nm == 0) {
-        p = Nb;
-    }
-    else {
-        p = mod(-Nm, Nb);
-    }
-//    printf("padding is %d \n", p);
-//    // find out the number of blocks
-//    int num_blocks = 0;
-//    if ((len % Nb) == 0) {
-//        num_blocks = len/Nb;
-//    } else {
-//       num_blocks = len/Nb + 1;
-//    }
-//    printf("num blocks is %d \n \n", num_blocks);
-//     M_2primes contains the num_blocks with each of Nb bytes
-//    unsigned char M_2primes[num_blocks][Nb];
-//    // popularizing the non-last blocks with data
-//    for (int i = 0; i < num_blocks-1; ++i) {
-//        for (int j = 0; j < Nb; ++j) {
-//            M_2primes[i][j] = a[j];
-//        }
-//    }
-    // save the remaining data to the context, so we can process it in the finalize function
-
-
-    // print out the M_2primes
-//    for (int i = 0; i < num_blocks; ++i) {
-//        printf("block number %d: ", i+1);
-//        for (int j =0; j <Nb; ++j) {
-//            printf("%x ", M_2primes[i][j]);
-//        }
-//        printf("\n");
-//    }
 }
 
 
 void finalize(unsigned char *a, context *ctx) {
-    //int ress = int_to_bin(pow(2,7) + pow(2, 6) + 48);
-    //strtol("10010011", NULL, 2);
-    //printf("%u", ress);
-    int te = 257;
-    //int_to_hex(pow(2,7) + pow(2, 6) + 48);
-    
-//    char xx[3];
-//    sprintf(xx, "%x", te);
-//
-//    for (int i=0; i < 3; i++) {
-//        printf("%c ", xx[i]);
-//    }
-    
-    unsigned char ttt[16];
-    // unsigned char res_tweak[16], int msg_type, int processed_bytes, int n_m, int a, int b, int i_step_of_ubi
-    tweak_gen(ttt, 48, 0, 32, 1, 1, 0);
-    for (int i=0; i < 16; i++) {
-        printf("%x ", ttt[i]);
-    }
-    //printf("%x", testc);
-    //printf("%c", testc[1]);
-    
-    
+
 }
 
