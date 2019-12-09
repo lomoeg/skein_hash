@@ -3,6 +3,8 @@
 #include "skein.h"
 #include "threefish.h"
 #include <inttypes.h>
+#include <math.h>
+#include <stdlib.h>
 
 #if 0 /* TODO change to 0 after you complete this task */
 /*
@@ -185,16 +187,46 @@ int mod(int a, int b)
 }
 
 
+int min(int a, int b) {
+    return b < a ? b : a;
+}
+
+
+void tweak_gen(unsigned char res_tweak[16], int msg_type, int processed_bytes, int n_m, int a, int b, int i_step_of_ubi) {
+    // bitpad always =0 since we get input msg in bytes
+    for(unsigned char i=0; i<16; i++) res_tweak[i] = 0x00;
+    
+    // Calculating the last byte
+    int last_byte = b*pow(2,7) + a*pow(2, 6) + msg_type;
+    res_tweak[15] = (unsigned char) last_byte;
+    
+    // Calculating the first two bytes -- position
+    //int first_value = processed_bytes + min(n_m, (1 + i_step_of_ubi) * 32);
+    int first_value = 256;
+    if (first_value > 255) {
+        res_tweak[0] = first_value / 256;
+        res_tweak[1] = first_value % 256;
+    } else {
+        res_tweak[0] = (unsigned char) first_value;
+    }
+    
+//    for (int i=0; i < 16; i++) {
+//        printf("%x ", res_tweak[i]);
+//    }
+//    printf("\n");
+}
+
+
 void update(unsigned char *a, int len, context *ctx) {
 //    printf("%s", "==== BEGIN THREEFISH CALL ==== \n");
 
     // --- printing the message ----
-    printf("len is %d \n", len);
-    printf("%s", "message before splitting: ");
-    for (int i = 0; i < 64; ++i) {
-        printf("%x ", a[i]);
-    }
-    printf("\n");
+//    printf("len is %d \n", len);
+//    printf("%s", "message before splitting: ");
+//    for (int i = 0; i < 64; ++i) {
+//        printf("%x ", a[i]);
+//    }
+//    printf("\n");
     // --- end printing the message ---
 
     // --- split the message and pad according to the len given (page 13) ---
@@ -207,23 +239,23 @@ void update(unsigned char *a, int len, context *ctx) {
     else {
         p = mod(-Nm, Nb);
     }
-    printf("padding is %d \n", p);
-    // find out the number of blocks
-    int num_blocks = 0;
-    if ((len % Nb) == 0) {
-        num_blocks = len/Nb;
-    } else {
-       num_blocks = len/Nb + 1;
-    }
-    printf("num blocks is %d \n \n", num_blocks);
-    // M_2primes contains the num_blocks with each of Nb bytes
-    unsigned char M_2primes[num_blocks][Nb];
-    // popularizing the non-last blocks with data
-    for (int i = 0; i < num_blocks-1; ++i) {
-        for (int j = 0; j < Nb; ++j) {
-            M_2primes[i][j] = a[j];
-        }
-    }
+//    printf("padding is %d \n", p);
+//    // find out the number of blocks
+//    int num_blocks = 0;
+//    if ((len % Nb) == 0) {
+//        num_blocks = len/Nb;
+//    } else {
+//       num_blocks = len/Nb + 1;
+//    }
+//    printf("num blocks is %d \n \n", num_blocks);
+//     M_2primes contains the num_blocks with each of Nb bytes
+//    unsigned char M_2primes[num_blocks][Nb];
+//    // popularizing the non-last blocks with data
+//    for (int i = 0; i < num_blocks-1; ++i) {
+//        for (int j = 0; j < Nb; ++j) {
+//            M_2primes[i][j] = a[j];
+//        }
+//    }
     // save the remaining data to the context, so we can process it in the finalize function
 
 
@@ -237,9 +269,30 @@ void update(unsigned char *a, int len, context *ctx) {
 //    }
 }
 
+
 void finalize(unsigned char *a, context *ctx) {
-    //printf("%u", a);
-
-
+    //int ress = int_to_bin(pow(2,7) + pow(2, 6) + 48);
+    //strtol("10010011", NULL, 2);
+    //printf("%u", ress);
+    int te = 257;
+    //int_to_hex(pow(2,7) + pow(2, 6) + 48);
+    
+//    char xx[3];
+//    sprintf(xx, "%x", te);
+//
+//    for (int i=0; i < 3; i++) {
+//        printf("%c ", xx[i]);
+//    }
+    
+    unsigned char ttt[16];
+    // unsigned char res_tweak[16], int msg_type, int processed_bytes, int n_m, int a, int b, int i_step_of_ubi
+    tweak_gen(ttt, 48, 0, 32, 1, 1, 0);
+    for (int i=0; i < 16; i++) {
+        printf("%x ", ttt[i]);
+    }
+    //printf("%x", testc);
+    //printf("%c", testc[1]);
+    
+    
 }
 
