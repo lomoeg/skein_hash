@@ -55,7 +55,7 @@ void mix_func(const uint64_t x0, const uint64_t x1, uint64_t y0, uint64_t y1, in
 
 /* Under key at k and tweak at t, encrypt 32 bytes of plaintext at p and store it at c. */
 void threefish(unsigned char *c, const unsigned char *p, const unsigned char *k, const unsigned char *t) {
-    
+    printf("=== BEGIN THREEFISH CALL === \n");
     // split key and tweaks to words
     uint64_t key_words[5];
     uint64_t tweak_words[3];

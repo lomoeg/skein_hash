@@ -111,15 +111,6 @@ void update(unsigned char *a, int len, context *ctx) {
     // --- end printing the message ---
 
     // --- implementing the algorithm ---
-
-    int a_counter = 0;
-    while (ctx->blockCounter < 32) {
-        ctx->lastBlockPartial[ctx->blockCounter] = a[a_counter];
-        a_counter++;
-        if (a_counter >= len)
-    }
-
-
     if (len == 0) { // if len is 0 - special case
         printf("len is 0, no UBI \n");
         ctx->padding = Nb;

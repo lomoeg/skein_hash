@@ -11,11 +11,14 @@
  * - tweak
  */
 typedef struct {
-    unsigned char lastBlockPartial[32]; //
+    unsigned char lastBlockPartial[Nb]; // the partial bytes we need for the last block
     int padding; // number of zero bytes needed to pad into the last block
-    int blockCounter;
-//    int
-
+    int blockCounter; // count the number of bytes that are already copied to the last block
+    int posCounter; // count the number of bytes processed so far
+//    unsigned char config[Nb]; // save the config, which is `k` for the first threefish
+    int message_len; // length of the message
+    int threefish_count; // count number of threefish already called
+    unsigned char chaining_value[Nb]; // save the last Hi
 } context;
 
 
