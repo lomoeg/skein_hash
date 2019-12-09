@@ -1,4 +1,5 @@
 #include <stdint.h>
+#define Nb 32 // number of bytes of internal bytes for the Skein 256_256
 
 /* Hash instance context, i.e., hash state.
  * The buffer should be used to store the bytes left from partial
@@ -10,9 +11,13 @@
  * - tweak
  */
 typedef struct {
-    int padding; // how many zeros to pad into the last block
+    unsigned char lastBlockPartial[32]; //
+    int padding; // number of zero bytes needed to pad into the last block
+    int blockCounter;
+//    int
 
 } context;
+
 
 /* blkSize =  256 bits. hashSize =  256 bits */
 // output of the configuration UBI. if you are using Skein as a normal hash function,

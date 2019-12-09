@@ -76,7 +76,7 @@ void ubi(unsigned char *res ,unsigned char *g, unsigned char *m, int t_type) {
      * m: a message string of arbitrary length up to 2^99 - 8 bits, encoded in a string of bytes
      * t_type: the type value that specifies the TreeLevel and Type fields
      */
-    int Nb = 32; // for skein_256, number of bytes in the state = 32 bytes
+//    int Nb = 32; // for skein_256, number of bytes in the state = 32 bytes
 
     // if the number of bits in the message string is a multiply of 8:
     unsigned char *M_prime;
@@ -157,11 +157,11 @@ void init(context *ctx) {
         }
     }
 
-    printf("%s", "c_config_const: ");
-    for (int i = 0; i < 32; ++i) {
-        printf("%x ", c_config_const[i]);
-    }
-    printf("\n");
+//    printf("%s", "c_config_const: ");
+//    for (int i = 0; i < 32; ++i) {
+//        printf("%x ", c_config_const[i]);
+//    }
+//    printf("\n");
     // ---- end of configure c_config_const ----
     
     // make K' = 0^32
@@ -184,6 +184,57 @@ int mod(int a, int b)
     // helper function with modulo on negative number
     int r = a % b;
     return r < 0 ? r + b : r;
+}
+
+void update(unsigned char *a, int len, context *ctx) {
+
+    //    printf("%s", "==== BEGIN THREEFISH CALL ==== \n");
+    // --- printing the whole message (in a)----
+    printf("len is %d \n", len);
+    printf("%s", "message before splitting: ");
+    for (int i = 0; i < 64; ++i) {
+        printf("%x ", a[i]);
+    }
+    printf("\n");
+    // --- end printing the message ---
+
+    // --- implementing the algorithm ---
+    if (len == 0) { // if len is 0 - special case
+        ctx->padding = Nb;
+        ctx->blockCounter = 0;
+    } else if (len <= Nb && len > 0) { // only 1 block, the first one is also the last one
+        for (int i = 0; i < len; ++i) {
+            ctx->lastBlockPartial[i] = a[i];
+            if (len % Nb == 0 && len > 0) { // in cases where len = 32 or 64
+                ctx->padding = 0;
+            }
+            else {
+                ctx->padding = Nb - len; // cases where len is not a multiply of 32
+            }
+        }
+        ctx->blockCounter = len;
+    } else { // we have more than 1 block
+        unsigned char Mi[Nb]; // the current whole block that we are working on
+        int posCounter = 0;
+        while (posCounter + Nb < len) {
+            printf("%s", "current block: ");
+            for (int i = 0; i < Nb; ++i) {
+                Mi[posCounter + i] = a[posCounter + i];
+                printf("%x ", Mi[posCounter+i]);
+            }
+            printf("\n");
+            posCounter += Nb;
+        }
+        // the last block
+        int blockCounter = 0;
+        while (posCounter < len){
+            ctx->lastBlockPartial[blockCounter] = a[posCounter];
+            blockCounter++;
+            posCounter++;
+        }
+        ctx->blockCounter = blockCounter;
+        ctx->padding = Nb - blockCounter;
+    }
 }
 
 
@@ -216,12 +267,27 @@ void tweak_gen(unsigned char res_tweak[16], int msg_type, int processed_bytes, i
 }
 
 
-void update(unsigned char *a, int len, context *ctx) {
-
-}
-
 
 void finalize(unsigned char *a, context *ctx) {
+    unsigned char h[32];
+    for (int i = 0; i < ctx->blockCounter; ++i) {
+        h[i] = ctx->lastBlockPartial[i];
+    }
+    // pad the last block
+    for (int i = 0; i < ctx->padding; ++i) {
+        h[ctx->blockCounter + i] = 0x00;
+    }
+    printf("blockCounter is %d \n", ctx->blockCounter);
+    printf("padding is %d \n", ctx->padding);
+    printf("%s", "last block (padded): ");
+    for (int i = 0; i < Nb; ++i) {
+       printf("%x ", h[i]);
+    }
+    printf("\n");
 
+
+    unsigned char last_tweak[16] = {
+            0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFF
+    };
 }
 
