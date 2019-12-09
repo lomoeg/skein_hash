@@ -201,8 +201,7 @@ void tweak_gen(unsigned char res_tweak[16], int msg_type, int processed_bytes, i
     res_tweak[15] = (unsigned char) last_byte;
     
     // Calculating the first two bytes -- position
-    //int first_value = processed_bytes + min(n_m, (1 + i_step_of_ubi) * 32);
-    int first_value = 256;
+    int first_value = processed_bytes + min(n_m, (1 + i_step_of_ubi) * 32);
     if (first_value > 255) {
         res_tweak[0] = first_value / 256;
         res_tweak[1] = first_value % 256;
